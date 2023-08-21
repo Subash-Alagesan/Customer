@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const mysql = require("mysql");
 const server = express();
 server.use(bodyParser.json());
+const { validateCustomer } = require('./validation');
  
 
 
@@ -14,6 +15,9 @@ const connection = mysql.createConnection({
     database: "customer",
 
 });
+
+
+
 
 connection.connect(function (error) {
     if (error) {
@@ -37,7 +41,7 @@ connection.connect(function (error) {
 
 
 
-server.post("/api/customer", (req, res) => {
+server.post("/api/customer", validateCustomer,(req, res) => {
   let details = {
     customerid: req.body.customerid,
     customername: req.body.customername,
@@ -70,3 +74,5 @@ server.get("/api/customer/allcustomer", (req, res) => {
     }
   });
 });
+
+
